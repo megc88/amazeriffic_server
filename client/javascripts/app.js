@@ -10,9 +10,9 @@ var main = function(toDoObjects) {
     
 
     $(element).on("click", function() {
-      var $content;
-      var $input;
-      var $button;
+      var $content,
+      var $input,
+      var $button,
       var i;
 
     $(".tabs a span").removeClass("active");
