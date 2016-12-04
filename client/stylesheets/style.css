@@ -1,0 +1,109 @@
+body {
+  background: #f9e933;
+  font-family: 'Droid Sans', sans-serif;
+  font-size: 100%;
+}
+
+
+header, main, footer {
+  min-width: 855px;	
+}
+
+header .container, main .container, footer .container {
+  max-width: 855px;
+  margin: auto;
+}  
+
+a {
+  color: blue;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Ubuntu', sans-serif;
+}
+
+header {
+  background: white;
+  overflow: hidden;
+  padding-top:30px;
+  padding-bottom: 30px;
+}
+
+h1 {
+  float: left;
+  width: 570px;
+  font-size: xx-large;
+  font-style: italic;
+  color: red;
+}
+
+header nav {
+  float: right;
+  width: 285px;
+}
+
+main {
+  background: white;
+  overflow: hidden;
+  height: 550px;
+}
+
+.tabs a span {
+  display: inline-block;
+    border-radius: 5px 5px 0 0;
+    width: 100px;
+    margin-right: 10px;
+    text-align: center;
+    background: #999;
+    padding: 5px;
+}
+
+
+.tabs a span.active {
+  background: #eee;
+}
+
+main li {
+  border: 25px;
+  margin-bottom: 5px;
+  background: whitesmoke;
+}
+
+main .content {
+  background: #eee;
+  padding: 5px;
+}
+
+.contact {
+  float: left;
+  width: 570px;
+}  
+
+h4 {
+  font-size: large;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.sitemap {
+  float: right;
+  max-width: 285px;
+}
+
+.sitemap1 {
+  float: left;
+  width: 142.5px;
+}
+
+.sitemap2 {
+  float: right;
+  width: 142.5px;
+}
+
+
+
