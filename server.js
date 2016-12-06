@@ -1,49 +1,46 @@
 var express = require("express"),
     http = require("http"),
-    app = express(),
-    toDos = [
-     {  
-      "description" : "Get groceries",
-       "tags" : [ "shopping", "chores" ]
-     },
-     {
-       "description" : "Make up some new Todos",
-       "tags" : [ "writing", "work" ]
-     },
-     {
-       "description" : "Prep for Monday's class",
-       "tags" : [ "work", "teaching" ]
-     },
-     {
-       "description" : "Answer emails",
-       "tags" : [ "work" ]
-     },
-     {
-       "description" : "Take Gracie to the park",
-       "tags" : [ "chores", "pets" ]
-     },
-     {
-       "description" : "Finish writing this book",
-       "tags" : ["writing", "work" ]
-     }
-   ]
+    mongoose = require("mongoose"),
+    app = express();
 
 app.use(express.static(__dirname + "/client"));
-
 app.use(express.urlencoded());
+
+mongoose.connect('mongodb://localhost/amazeriffic');
+
+var ToDoSchema = mongoose.Schema({
+   description: String,
+   tags: [String]
+
+});
+
+var ToDo = mongoose.model("ToDo", ToDoSchema);
 
 http.createServer(app).listen(3000);
 
 app.get("/todos.json", function(req, res) {
-   res.json(toDos);
-});
+   ToDo.find({}, function (err, toDos) {
+      res.json(toDos);
+      });
+   });
 
 app.post("/todos", function (req, res) {
-   var newToDo = req.body;
-   console.log(newToDo);
-   toDos.push(newToDo);
+   console.log(req.body);
+   var newToDo = new ToDo({"description":req.body.description, "tags":req.body.tags});
 
-   res.json({"message":"You posted to the server!"});
+   newToDo.save(function (err, result) {
+      if (err !== null) {
+         console.log(err);
+         res.send("ERROR");
+      } else {
+         ToDo.find({}, function (err, result) {
+            if (err !== null) {
+               res.send("ERROR");   
+            }
+         res.json(result);
+         });
+     }
+   });
 });
-
+ 
 
