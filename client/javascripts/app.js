@@ -74,8 +74,8 @@ var main = function(toDoObjects) {
 	             $content.append($li);
                   });
 
-                 $("main .content").append($tagName);
-                 $("main .content").append($content);
+                $content = $("main .content").append($tagName)
+                                             .append($content);
               });
 	     callback($content);
 	  }); 
@@ -135,9 +135,12 @@ var main = function(toDoObjects) {
            $spanElement.addClass("active");
            $("main .content").empty();
 
+
            tab.content(function ($content) {
-             $("main .content").append($content);
-             });
+              if (tab.name !== "Tags") {
+                 $("main .content").append($content);
+              };
+           });
         });
     });
 
