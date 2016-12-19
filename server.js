@@ -1,8 +1,9 @@
 var express = require("express"),
     http = require("http"),
-    mongoose = require("mongoose"),
     app = express(),
     port = process.env.PORT || 3000,
+    mongoose = require("mongoose"),
+    ToDo = require("./models/todo.js"),
     services,
     mongoUrl;
     
@@ -18,13 +19,6 @@ if (process.env.VCAP_SERVICES) {
 
 mongoose.connect(mongoUrl);
 
-var ToDoSchema = mongoose.Schema({
-   description: String,
-   tags: [String]
-
-});
-
-var ToDo = mongoose.model("ToDo", ToDoSchema);
 
 http.createServer(app).listen(port);
 
