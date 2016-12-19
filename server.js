@@ -3,7 +3,7 @@ var express = require("express"),
     app = express(),
     port = process.env.PORT || 3000,
     mongoose = require("mongoose"),
-    ToDo = require("./models/todo.js"),
+    ToDosController = require("./controllers/todos_controller.js"),
     services,
     mongoUrl;
     
@@ -22,25 +22,7 @@ mongoose.connect(mongoUrl);
 
 http.createServer(app).listen(port);
 
-app.get("/todos.json", function(req, res) {
-   ToDo.find({}, function (err, toDos) {
-      res.json(toDos);
-      });
-   });
+app.get("/todos.json", ToDosController.index);
 
-app.post("/todos", function (req, res) {
-   console.log(req.body);
-   var newToDo = new ToDo({"description":req.body.description, "tags":req.body.tags});
-
-   newToDo.save(function (err, result) {
-      console.log(result);
-      if (err !== null) {
-         console.log(err);
-         res.json(err);
-      } else {
-         res.json(result);
-     }
-   });
-});
- 
+app.post("/todos", ToDosController.create); 
 
