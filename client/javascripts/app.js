@@ -16,30 +16,35 @@ var main = function(toDoObjects) {
 
        tabs.push({
           "name": "Newest",
-	  "content": function() {
+	  "content": function(callback) {
+           $.getJSON("todos.json", function(toDoObjects) {
 	     $content = $("<ul>");
              for(i = toDos.length-1; i >= 0; i--) {
                 $content.append($("<li>").text(toDos[i]));
-             }
-	     return $content;
-           }   
+             }	     
+            callback($content);
+            });
+            }   
        });
 
        tabs.push({
           "name": "Oldest",
-	  "content": function() {
+	  "content": function(callback) {
+                $.getJSON("todos.json", function(toDoObjects) {
                 $content = $("<ul>");
                 toDos.forEach(function (todo) {
                    $content.append($("<li>").text(todo));
                 });
-             return $content;
+             callback($content);
+          });
 	  }
        });
 
        tabs.push({
           "name": "Tags",
-	  "content": function() {
-           //     var tags = [];
+	  "content": function(callback) {
+             $.getJSON("todos.json", function(toDoObjects){
+               var tags = [];
 
                 toDoObjects.forEach(function (toDo) {
                    toDo.tags.forEach(function (tag) {
@@ -72,14 +77,16 @@ var main = function(toDoObjects) {
                  $("main .content").append($tagName);
                  $("main .content").append($content);
               });
-	     // return $content;
-	   }
+	     callback($content);
+	  }); 
+          }
 	});
 
    
       tabs.push({
          "name": "Add",
-	 "content": function(){
+	 "content": function(callback){
+           $.getJSON("todos.json", function(toDoObjects) {
             var $input = $("<input>").addClass("description"),
             $inputLabel = $("<p>").text("Description: "),
      	    $tagInput = $("<input>").addClass("tags"),
@@ -110,39 +117,33 @@ var main = function(toDoObjects) {
 			         .append($tagLabel)
     			         .append($tagInput)
 	   		         .append($button);
-	    return $content;
+	    callback($content);
+         });
 	 }
-      });
-   
+     });   
      tabs.forEach(function(tab) {
-        var $aElement = $("<a>").attr("href",""),
+        var $aElement = $("<a>").attr("href","#"),
             $spanElement = $("<span>").text(tab.name);
         $aElement.append($spanElement);
+        $("main .tabs").append($aElement);
 
-        $spanElement.on("click", function() {
+
+	$spanElement.on("click", function() {
+	   var $content;
 
            $(".tabs a span").removeClass("active");
            $spanElement.addClass("active");
            $("main .content").empty();
 
+           tab.content(function ($content) {
+             $("main .content").append($content);
+             });
+        });
+    });
 
-
-           $content = tab.content(); 
-           
-
-           $("main .content").append($content);
-     
-            return false;
-
-      });
-
-     $("main .tabs").append($aElement);
-   });
 };
-
 $(document).ready(function () {
    $.getJSON("todos.json", function (toDoObjects) {
       main(toDoObjects);
+      });
    });
-});
-
