@@ -39,16 +39,12 @@ app.post("/todos", function (req, res) {
    var newToDo = new ToDo({"description":req.body.description, "tags":req.body.tags});
 
    newToDo.save(function (err, result) {
+      console.log(result);
       if (err !== null) {
          console.log(err);
-         res.send("ERROR");
+         res.json(err);
       } else {
-         ToDo.find({}, function (err, result) {
-            if (err !== null) {
-               res.send("ERROR");   
-            }
          res.json(result);
-         });
      }
    });
 });

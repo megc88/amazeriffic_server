@@ -6,8 +6,7 @@ var main = function(toDoObjects) {
        $input,
        $button,
        i;
-
-   toDos = toDoObjects.map(function (toDo) {
+  toDos = toDoObjects.map(function (toDo) {
      return toDo.description;
    });
   
@@ -19,11 +18,16 @@ var main = function(toDoObjects) {
 	  "content": function(callback) {
            $.getJSON("todos.json", function(toDoObjects) {
 	     $content = $("<ul>");
+             toDos = toDoObjects.map(function (toDo) {
+               return toDo.description;
+             });
              for(i = toDos.length-1; i >= 0; i--) {
                 $content.append($("<li>").text(toDos[i]));
              }	     
-            callback($content);
-            });
+            callback(null, $content);
+            }).fail(function (jqXHR, textStatus, error) {
+               callback(error, null);
+               });
             }   
        });
 
@@ -32,11 +36,16 @@ var main = function(toDoObjects) {
 	  "content": function(callback) {
                 $.getJSON("todos.json", function(toDoObjects) {
                 $content = $("<ul>");
+                toDos = toDoObjects.map(function (toDo) {
+                   return toDo.description;
+                });
                 toDos.forEach(function (todo) {
                    $content.append($("<li>").text(todo));
                 });
-             callback($content);
-          });
+             callback(null, $content);
+          }).fail(function (jqXHR, textStatus, error) {
+             callback(error, null);
+             });
 	  }
        });
 
@@ -77,8 +86,10 @@ var main = function(toDoObjects) {
                 $content = $("main .content").append($tagName)
                                              .append($content);
               });
-	     callback($content);
-	  }); 
+	     callback(null, $content);
+	  }).fail(function (jqXHR, textStatus, error) {
+             callback(error, null);
+            }); 
           }
 	});
 
@@ -98,27 +109,22 @@ var main = function(toDoObjects) {
                 tags = $tagInput.val().split(","),
 	        newToDo = {"description":description, "tags":tags};
 
-	        toDoObjects.push({"description":description, "tags":tags});
+	        $.post("todos", newToDo, function(result) {
+	           $input.val("");
+	           $tagInput.val("");
 
-	        $.post("todos", newToDo, function(response) {
-	           console.log(response);
-	        });
-   
-	     toDos = toDoObjects.map(function(toDo) {
-	     return toDo.description;
-	     });
-	
-	       $input.val("");
-	       $tagInput.val("");
-            });	
+                   $(".tabs a:first span").trigger("click");
+                 });
+             });	
 
    	    $content = $("<div>").append($inputLabel)
 			         .append($input)
 			         .append($tagLabel)
     			         .append($tagInput)
 	   		         .append($button);
-	    callback($content);
-         });
+	    callback(null, $content);
+         }).fail(function (jqXHR, textStatus, error) {
+           });
 	 }
      });   
      tabs.forEach(function(tab) {
@@ -136,13 +142,18 @@ var main = function(toDoObjects) {
            $("main .content").empty();
 
 
-           tab.content(function ($content) {
-              if (tab.name !== "Tags") {
-                 $("main .content").append($content);
-              };
+           tab.content(function (err, $content) {
+              if (err !== null) {
+                 alert("There was a problem with your request" + err);
+              } else {
+                if (tab.name !== "Tags") {
+                  $("main .content").append($content);
+                } 
+             }
            });
         });
     });
+    $(".tabs a:first span").trigger("click");
 
 };
 $(document).ready(function () {
