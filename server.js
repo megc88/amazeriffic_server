@@ -4,6 +4,7 @@ var express = require("express"),
     port = process.env.PORT || 3000,
     mongoose = require("mongoose"),
     ToDosController = require("./controllers/todos_controller.js"),
+    UsersController = require("./controllers/user_controller.js"),
     services,
     mongoUrl;
     
@@ -27,4 +28,18 @@ app.get("/todos/:id", ToDosController.show);
 app.get("/todos.json", ToDosController.index);
 
 app.post("/todos", ToDosController.create); 
+
+
+app.get("/users.json", UsersController.index);
+app.post("/users", UsersController.create);
+app.get("/users/:username", UsersController.show);
+app.put("/users/:username", UsersController.update);
+app.delete("/users/:username", UsersController.destroy);
+
+
+app.get("/users/:username/todos.json", ToDosController.index);
+app.post("/users/:username/todos", ToDosController.create);
+app.put("/users/:username/todos/:id", ToDosController.update);
+app.delete("/users/:username/todos/:id", ToDosController.destroy);
+
 
