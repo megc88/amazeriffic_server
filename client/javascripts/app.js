@@ -16,7 +16,7 @@ var main = function(toDoObjects) {
        tabs.push({
           "name": "Newest",
 	  "content": function(callback) {
-           $.getJSON("todos.json", function(toDoObjects) {
+           $.getJSON("/todos.json", function(toDoObjects) {
 	     $content = $("<ul>");
              toDos = toDoObjects.map(function (toDo) {
                return toDo.description;
@@ -34,7 +34,7 @@ var main = function(toDoObjects) {
        tabs.push({
           "name": "Oldest",
 	  "content": function(callback) {
-                $.getJSON("todos.json", function(toDoObjects) {
+                $.getJSON("/todos.json", function(toDoObjects) {
                 $content = $("<ul>");
                 toDos = toDoObjects.map(function (toDo) {
                    return toDo.description;
@@ -52,7 +52,7 @@ var main = function(toDoObjects) {
        tabs.push({
           "name": "Tags",
 	  "content": function(callback) {
-             $.getJSON("todos.json", function(toDoObjects){
+             $.getJSON("/todos.json", function(toDoObjects){
                var tags = [];
 
                 toDoObjects.forEach(function (toDo) {
@@ -97,7 +97,7 @@ var main = function(toDoObjects) {
       tabs.push({
          "name": "Add",
 	 "content": function(callback){
-           $.getJSON("todos.json", function(toDoObjects) {
+           $.getJSON("/todos.json", function(toDoObjects) {
             var $input = $("<input>").addClass("description"),
             $inputLabel = $("<p>").text("Description: "),
      	    $tagInput = $("<input>").addClass("tags"),
@@ -157,7 +157,7 @@ var main = function(toDoObjects) {
 
 };
 $(document).ready(function () {
-   $.getJSON("todos.json", function (toDoObjects) {
+   $.getJSON("/todos.json", function (toDoObjects) {
       main(toDoObjects);
       });
    });
