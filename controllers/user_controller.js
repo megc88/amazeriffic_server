@@ -1,4 +1,4 @@
-var User = require("../models/user.js");
+var User = require("../models/user.js").User,
     mongoose = require("mongoose");
 
 User.find({}, function (err, result) {
@@ -27,12 +27,12 @@ UsersController.index = function (req, res) {
 };
 
 UsersController.show = function (req, res) {
-   console.log("show action called");
    User.find({"username":req.params.username}, function (err, result) {
       if (err) {
 	 console.log(err);
          res.send(500);
       } else if (result.length !== 0) {
+         console.log({"username":req.params.username});
          res.sendfile("./client/index.html");
       } else {
          res.send(404);

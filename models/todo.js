@@ -1,11 +1,16 @@
-var mongoose = require ("mongoose");
+var mongoose = require ("mongoose"),
+    ToDoSchema,
+    ObjectId = mongoose.Schema.Types.ObjectId;
 
-var ToDoSchema = mongoose.Schema({
+ToDoSchema = mongoose.Schema({
    description: String,
-   tags: [String]
+   tags: [String],
+   owner : { type: ObjectId, ref: "User" }
 });
 
 
 var ToDo = mongoose.model("ToDo", ToDoSchema);
+module.exports = {
+   ToDo : ToDo
+};
 
-module.exports = ToDo;
